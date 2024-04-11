@@ -57,6 +57,7 @@ type Square = {
 export class MineSweeperComponent implements OnInit {
   cols = 10;
   rows = 10;
+  diffulty = 0.1;
   board: Board = Array(this.rows)
     .fill([])
     .map(() => Array(this.cols).fill(0));
@@ -94,7 +95,7 @@ export class MineSweeperComponent implements OnInit {
   ngOnInit() {
     for (let i = 0; i < this.rows; i++) {
       for (let j = 0; j < this.cols; j++) {
-        let isMine = Math.random() > 0.8;
+        let isMine = Math.random() < this.diffulty;
         let square: Square = {
           value: isMine ? -1 : 0,
           isRevealed: false,
