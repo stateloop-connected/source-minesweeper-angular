@@ -1,0 +1,6 @@
+<p>Cats</p>
+<div *ngIf="!data.length">loading...</div>
+<div *ngFor="let el of data">
+  <p>{{ el.breed }}</p>
+</div>
+<button (click)="next()">Next</button>

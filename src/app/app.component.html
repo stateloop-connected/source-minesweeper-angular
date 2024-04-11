@@ -1,0 +1,91 @@
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
+<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
+<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * Delete the template below * * * * * * * * * -->
+<!-- * * * * * * * to get started with your project! * * * * * * * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+
+<style>
+  .main {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+  }
+  .ul {
+    flex: 0.2;
+  }
+
+  .content {
+    flex: 0.8;
+  }
+</style>
+
+<main class="main">
+  <ul class="list-group">
+    <li class="list-group-item">
+      <a
+        [routerLinkActiveOptions]="{ exact: true }"
+        routerLink="/"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Home</a
+      >
+    </li>
+    <li class="list-group-item">
+      <a
+        routerLink="/first"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >First Component</a
+      >
+    </li>
+    <li *ngFor="let id of ids" class="list-group-item">
+      <a
+        routerLink="/second/{{ id }}"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Second Component {{ id }}</a
+      >
+    </li>
+    <li class="list-group-item">
+      <a
+        routerLink="/form"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Form</a
+      >
+    </li>
+    <li class="list-group-item">
+      <a
+        routerLink="/nested"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Nested
+      </a>
+    </li>
+
+    <li class="list-group-item">
+      <a
+        routerLink="/minesweeper"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >MineSweeper
+      </a>
+    </li>
+
+    <li class="list-group-item">
+      <a
+        routerLink="/modelform"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Model Driven Form
+      </a>
+    </li>
+  </ul>
+
+  <div class="content">
+    <router-outlet />
+  </div>
+</main>

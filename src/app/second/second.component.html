@@ -1,0 +1,14 @@
+<div *ngIf="id > 0 && id <= 5; else notFound">
+  <h1>Second Component {{ id }}</h1>
+  <p>
+    This is the second component. It is a child component of the main app
+    component.
+  </p>
+  <p *ngIf="dataService.loading">Loading...</p>
+  <div *ngIf="data">{{ data.name }}</div>
+</div>
+
+<ng-template #notFound>No greeting, Lagbaja nothing for you.</ng-template>
+
+<button (click)="goBack()">Go Back</button>
+<button (click)="goForward()">Go Forward</button>
