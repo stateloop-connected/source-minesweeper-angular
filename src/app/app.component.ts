@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
-import { MineSweeperComponent } from './mine-sweeper/mine-sweeper.component';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MinesweeperComponent } from './minesweeper/minesweeper.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [MineSweeperComponent],
+  imports: [MinesweeperComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <main>
       <h1>Minesweeper</h1>
-      <app-mine-sweeper />
+      <app-minesweeper />
     </main>
   `,
   styles: `

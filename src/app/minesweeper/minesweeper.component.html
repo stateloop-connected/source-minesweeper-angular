@@ -1,0 +1,37 @@
+<section class="board-panel">
+  <div class="controls">
+    @for (level of levels; track level.id) {
+      <button
+        type="button"
+        class="level"
+        [class.selected]="level.id === difficulty"
+        (click)="selectDifficulty(level.id)"
+      >
+        {{ level.label }} <span class="dims">{{ level.cols }}&times;{{ level.rows }}, {{ level.mines }}</span>
+      </button>
+    }
+    <button type="button" class="restart" (click)="restart()">Restart</button>
+  </div>
+
+  <div class="readout">
+    <span class="counter" aria-label="mines remaining">{{ minesLeft }} left</span>
+    <span class="status" [class.won]="game.status === 'won'" [class.lost]="game.status === 'lost'">
+      {{ statusText }}
+    </span>
+  </div>
+
+  <div class="grid" [style.grid-template-columns]="'repeat(' + game.cols + ', 1.75rem)'">
+    @for (cell of game.cells; track $index) {
+      <button
+        type="button"
+        [class]="cellClass(cell)"
+        [disabled]="isOver"
+        [attr.aria-label]="cellText(cell) || 'covered cell'"
+        (click)="dig($index)"
+        (contextmenu)="flag($event, $index)"
+      >
+        {{ cellText(cell) }}
+      </button>
+    }
+  </div>
+</section>
