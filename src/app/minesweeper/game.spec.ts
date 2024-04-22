@@ -171,9 +171,11 @@ describe('reveal', () => {
 
   it('ignores clicks on revealed or flagged cells and on a finished game', () => {
     const board = boardOf(['*..', '...', '..*']);
+    const opened = reveal(board, index(board, 1, 1));
     const flagged = toggleFlag(board, index(board, 0, 1));
     const lost = reveal(board, index(board, 0, 0));
 
+    expect(reveal(opened, index(board, 1, 1))).toBe(opened);
     expect(reveal(flagged, index(board, 0, 1))).toBe(flagged);
     expect(reveal(lost, index(board, 1, 1))).toBe(lost);
   });
