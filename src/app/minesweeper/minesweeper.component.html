@@ -14,7 +14,7 @@
   </div>
 
   <div class="readout">
-    <span class="counter" aria-label="mines remaining">{{ minesLeft }} left</span>
+    <span class="counter" [attr.aria-label]="minesLeft + ' mines remaining'">{{ minesLeft }} left</span>
     <span class="status" [class.won]="game.status === 'won'" [class.lost]="game.status === 'lost'">
       {{ statusText }}
     </span>
@@ -26,7 +26,7 @@
         type="button"
         [class]="cellClass(cell)"
         [disabled]="isOver"
-        [attr.aria-label]="cellText(cell) || 'covered cell'"
+        [attr.aria-label]="cellLabel(cell)"
         (click)="dig($index)"
         (contextmenu)="flag($event, $index)"
       >

@@ -49,6 +49,24 @@ describe('MinesweeperComponent', () => {
     expect(cells()[0].textContent?.trim()).toBe('⚑');
   });
 
+  it('gives an opened blank cell a different accessible name from a covered one', () => {
+    // Both render as empty text, so a label derived from the text would make
+    // the opened board indistinguishable from the unopened one.
+    cells()[0].click();
+    fixture.detectChanges();
+    const blank = cells().find((cell) => cell.classList.contains('adjacent-0'));
+
+    expect(blank?.getAttribute('aria-label')).toBe('empty cell');
+    expect(cells().find((cell) => cell.classList.contains('hidden'))?.getAttribute('aria-label'))
+      .toBe('covered cell');
+  });
+
+  it('names the mine counter with its value rather than replacing it', () => {
+    const counter = fixture.debugElement.query(By.css('.counter')).nativeElement;
+
+    expect(counter.getAttribute('aria-label')).toBe(`${LEVELS.beginner.mines} mines remaining`);
+  });
+
   it('uncovers every mine and disables the grid after digging one up', () => {
     cells()[0].click();
     fixture.detectChanges();

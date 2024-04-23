@@ -73,6 +73,18 @@ export class MinesweeperComponent {
     return cell.adjacent === 0 ? '' : String(cell.adjacent);
   }
 
+  /**
+   * Derived from state, not from `cellText`: a revealed blank and a covered
+   * cell both render as empty text, so a text-derived label would announce
+   * them identically and hide the whole opened region from a screen reader.
+   */
+  cellLabel(cell: Cell): string {
+    if (cell.state !== 'revealed') return cell.state === 'flagged' ? 'flagged cell' : 'covered cell';
+    if (cell.mine) return 'mine';
+    if (cell.adjacent === 0) return 'empty cell';
+    return `${cell.adjacent} adjacent mine${cell.adjacent === 1 ? '' : 's'}`;
+  }
+
   cellClass(cell: Cell): string {
     if (cell.state !== 'revealed') return `cell ${cell.state}`;
     if (cell.mine) return 'cell revealed mine';
