@@ -93,12 +93,15 @@ function countAdjacent(game: Game): Game {
   return { ...game, cells };
 }
 
+/**
+ * The clickability guard runs before `plantMines`, not after: a click on a
+ * flagged cell of a fresh board has to be a complete no-op, and planting first
+ * would spend the once-per-game safe zone on a cell the player will never open.
+ */
 export function reveal(game: Game, index: number, rng: Rng = Math.random): Game {
-  if (isOver(game)) return game;
+  if (isOver(game) || game.cells[index].state !== 'hidden') return game;
   const started = game.status === 'ready' ? plantMines(game, index, rng) : game;
-  const cell = started.cells[index];
-  if (cell.state !== 'hidden') return started;
-  return cell.mine ? detonate(started) : settle(floodFill(started, index));
+  return started.cells[index].mine ? detonate(started) : settle(floodFill(started, index));
 }
 
 /**
@@ -113,7 +116,7 @@ function floodFill(game: Game, index: number): Game {
   const queued = new Set(stack);
   for (let current = stack.pop(); current !== undefined; current = stack.pop()) {
     const cell = cells[current];
-    if (cell.mine || cell.state === 'flagged') continue;
+    if (cell.state === 'flagged') continue;
     cells[current] = { ...cell, state: 'revealed' };
     if (cell.adjacent !== 0) continue;
     const next = neighbours(game, current).filter((n) => !queued.has(n));

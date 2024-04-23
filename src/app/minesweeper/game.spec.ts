@@ -180,6 +180,16 @@ describe('reveal', () => {
     expect(reveal(lost, index(board, 1, 1))).toBe(lost);
   });
 
+  it('plants nothing when the first click of a fresh game lands on a flagged cell', () => {
+    // The guard has to precede plantMines: otherwise the one first-click safe
+    // zone is burned on a cell the player has marked and will never open.
+    const fresh = toggleFlag(createGame('beginner'), 40);
+
+    expect(reveal(fresh, 40, () => 0.5)).toBe(fresh);
+    expect(fresh.status).toBe('ready');
+    expect(fresh.cells.some((cell) => cell.mine)).toBe(false);
+  });
+
   it('does not mutate the game it is given', () => {
     const board = boardOf(['....', '....', '....', '...*']);
     reveal(board, 0);
