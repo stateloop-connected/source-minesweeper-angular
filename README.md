@@ -2,8 +2,10 @@
 
 Beginner/Intermediate/Expert boards, first-click safety, right-click flagging and a
 cascading reveal. The interesting part is not the UI: it is keeping every rule of the
-game in a dependency-free module of pure functions, so the flood fill, the mine
-placement and the win condition can be tested exhaustively without a browser.
+game in `game.ts`, a module that imports nothing — no Angular, no DOM — so the flood
+fill, the mine placement and the win condition are plain data transforms that any
+runner can point at. (The repo runs them under Karma with the component specs, which
+does need Chrome; the module itself does not.)
 
 ## Stack
 
@@ -57,7 +59,10 @@ src/main.ts                                 bootstraps AppComponent, no provider
   Fisher–Yates shuffle of the remaining candidates: O(rows × cols), and unlike the
   usual "pick a random cell, retry if occupied" loop it cannot degrade as the board
   fills up. A consequence worth stating: the first click is always a blank cell, so it
-  always opens a region rather than a bare `1`.
+  always opens a region rather than a bare `1`. Ordering matters here: `reveal` checks
+  that the cell is actually clickable *before* it plants, otherwise a left click on a
+  flagged cell of a fresh board would spend the one-per-game safe zone on nine cells
+  around a square the player has explicitly marked and will never open.
 - **The cascade is an explicit stack, not recursion.** The earlier version recursed
   into neighbours and guarded with `visited.add(key)` immediately *before* checking
   `!visited.has(key)` — a condition that can never be true, so the reveal never
@@ -78,17 +83,19 @@ src/main.ts                                 bootstraps AppComponent, no provider
 
 ## Tests
 
-25 specs, run with `npm run test:ci`:
+28 specs, run with `npm run test:ci`:
 
-- **`game.spec.ts` (20)** — the rules, against fixed boards built from ASCII maps
+- **`game.spec.ts` (21)** — the rules, against fixed boards built from ASCII maps
   (`'*'` = mine) rather than random layouts. Covers: neighbour clamping at corners and
   the no-wrap-around-a-row-edge case; exact mine count and the safe-zone exclusion
   under an adversarial RNG that packs mines against it; mine-count clamping when the
   safe zone leaves too few cells; adjacency counts; a cascade opening a blank region
   and stopping on its numbered border; termination on an all-blank board; flags
   surviving a cascade; losing uncovering every mine but nothing else; winning without
-  a single flag placed; no-ops on revealed, flagged and finished-game clicks; and
-  non-mutation of the input.
-- **`minesweeper.component.spec.ts` (5)** — grid size per difficulty, rebuilding the
+  a single flag placed; no-ops on revealed, flagged and finished-game clicks, including
+  a flagged first click that must not plant mines; and non-mutation of the input.
+- **`minesweeper.component.spec.ts` (7)** — grid size per difficulty, rebuilding the
   board from the difficulty buttons, revealing on click, flagging on right click with
-  the counter decrementing, and the grid disabling itself after a mine is dug up.
+  the counter decrementing, the grid disabling itself after a mine is dug up, and the
+  two accessible-name cases that empty text collapses: an opened blank cell must not
+  announce the same as a covered one, and the mine counter must keep its number.
