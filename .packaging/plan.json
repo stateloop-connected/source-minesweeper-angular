@@ -1,0 +1,14 @@
+{
+  "build_script": "ng build",
+  "gameplay_or_asset_changes": false,
+  "lockfile": "package-lock.json",
+  "mode": "native_source_build",
+  "repository": "sushruth31/minesweeper_angular",
+  "schema_version": 1,
+  "source_changes": [
+    ".packaging/plan.json"
+  ],
+  "status": "ready",
+  "upstream_code_executed_locally": false,
+  "upstream_sha": "a88626eecc414b4a28d05da56486f7988ee3403d"
+}
